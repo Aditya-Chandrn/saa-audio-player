@@ -22,8 +22,9 @@ _UpgradeReport_Files/
 ###############
 # Directories #
 ###############
-/bin
-/obj
+.vs/
+bin/
+obj/
 TestResults/
 ###################
 # Web publish log #
@@ -76,3 +77,4 @@ _[Ss]cripts
 
 ###### ENV ########
 .env
+.fake
