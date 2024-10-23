@@ -28,5 +28,16 @@ export default tseslint.config(
 	},
 	{
 		ignores: ['build/', '.svelte-kit/', 'dist/']
+	},
+	{
+		rules: {
+			"no-unused-vars": "warn",
+			"react/prop-types": "warn",
+			'react/jsx-no-target-blank': 'off',
+			'react-refresh/only-export-components': [
+				'warn',
+				{ allowConstantExport: true },
+			],
+		},
 	}
 );

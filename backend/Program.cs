@@ -15,10 +15,10 @@ public class Program
 		// add services
 		builder.Services.AddControllersWithViews();
 		builder.Services.ConfigDb();
-
+		Console.WriteLine(EnvVariables.CLIENT_URL);
 		builder.Services.AddCors(options =>
 		{
-			options.AddPolicy("AllowSpecificOrigins",
+			options.AddPolicy("AllowClient",
 				policy =>
 				{
 					policy.WithOrigins(EnvVariables.CLIENT_URL)
@@ -41,9 +41,9 @@ public class Program
 			app.UseHsts();
 		}
 
-
 		app.UseHttpsRedirection();
 		app.UseRouting();
+		app.UseCors("AllowClient");
 		app.UseAuthorization();
 		app.Run();
 	}
