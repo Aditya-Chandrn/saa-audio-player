@@ -24,4 +24,15 @@
 </script>
 
 <div>
+	<h1 class="text-2xl font-bold">All Songs</h1>
+	<ul>
+		{#each songs as song}
+			<li class="flex justify-between items-center p-2 border-b">
+				<span>{song.title} - {song.artist}</span>
+				<button on:click={() => addSong(song.id)} class="bg-green-500 text-white py-1 px-2 rounded">
+					Add to Playlist
+				</button>
+			</li>
+		{/each}
+	</ul>
 </div>
