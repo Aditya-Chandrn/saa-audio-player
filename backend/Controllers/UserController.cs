@@ -1,6 +1,7 @@
 using backend.Config;
 using backend.DTO.UserDTO;
 using backend.Services.UserServices;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers

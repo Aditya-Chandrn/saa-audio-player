@@ -1,15 +1,16 @@
 // stores/musicStore.ts
 import { writable } from 'svelte/store';
 
-interface Song {
+interface Audio {
+	id: number;
 	title: string;
 	artist: string;
 	url: string;
 }
 
 interface PlayerState {
-	currentSong: Song | null;
-	currentPlaylist: Song[] | null;
+	currentSong: Audio | null;
+	currentPlaylist: Audio[] | null;
 	currentIndex: number;
 	isPlaying: boolean;
 }
@@ -24,10 +25,10 @@ function createMusicStore() {
 
 	return {
 		subscribe,
-		playSong: (song: Song, playlist: Song[], index: number) => {
+		playSong: (audio: Audio, playlist: Audio[], index: number) => {
 			update((state) => ({
 				...state,
-				currentSong: song,
+				currentSong: audio,
 				currentPlaylist: playlist,
 				currentIndex: index,
 				isPlaying: true

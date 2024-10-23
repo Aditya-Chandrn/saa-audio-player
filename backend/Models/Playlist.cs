@@ -6,6 +6,7 @@ namespace backend.Models
   public class Playlist
   {
     public int Id { get; set; }
+    
     [Required(ErrorMessage = "Playlist Name required")]
     public string? Name { get; set; }
     public string? ShareLink { get; set; }
