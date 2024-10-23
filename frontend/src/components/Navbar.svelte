@@ -1,6 +1,8 @@
 <script lang="ts">
 	import '@/app.css';
 	import { Login } from '@/apiCalls/user/login';
+	import { goto } from '$app/navigation';
+
 
 	interface NavOption {
 		page: string;
@@ -11,12 +13,10 @@
 
 	let navOptions: readonly NavOption[] = [
 		{ page: 'Music', link: '/music' },
-		{ page: 'Playlist', link: `/${userSlug}/playlist` }
+		{ page: 'Playlist', link: `/${userSlug}/playlist` },
+		{ page: 'Login', link: '/login' }
 	];
 
-	const handleBtnClick = () => {
-		Login('Suyesh', 'suyesh@gmail.com', '123');
-	};
 </script>
 
 <nav class="bg-theme h-[80px] flex items-center px-[4vw] bg-green-300">
@@ -26,6 +26,5 @@
 				<a href={navOption.link}>{navOption.page}</a>
 			</li>
 		{/each}
-		<button on:click={handleBtnClick}>Login</button>
 	</ul>
 </nav>
