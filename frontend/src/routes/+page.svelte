@@ -1,80 +1,27 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
-	import { get } from 'svelte/store';
-	import Playlist from '@/components/Playlist.svelte';
+	import { createEventDispatcher } from 'svelte';
 
-	// Define the playlist type
-	type Song = {
+	type Audio = {
+		id: number;
 		title: string;
 		artist: string;
-		url: string;
-		// imgUrl: string;
 	};
 
-	type Playlist = {
-		id: string;
-		name: string;
-		imgUrl: string;
-		songs: Song[];
-	};
-
-	let playlist: Playlist | undefined;
-
-	let params = get(page).params;
-
-	// Sample playlists array
-	const playlists: Playlist[] = [
-		{
-			id: '1',
-			name: 'Chill Vibes',
-			imgUrl: 'https://via.placeholder.com/150',
-			songs: [
-				{
-					title: 'Song A',
-					artist: 'Artist A',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
-				},
-				{
-					title: 'Song B',
-					artist: 'Artist B',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
-				}
-			]
-		},
-		{
-			id: '2',
-			name: 'Workout Mix',
-			imgUrl: 'https://via.placeholder.com/150',
-			songs: [
-				{
-					title: 'Song C',
-					artist: 'Artist C',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-				},
-				{
-					title: 'Song D',
-					artist: 'Artist D',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
-				}
-			]
-		}
+	// List of all songs
+	const songs: Audio[] = [
+		{ id: 1, title: 'Song A', artist: 'Artist A' },
+		{ id: 2, title: 'Song B', artist: 'Artist B' },
+		{ id: 3, title: 'Song C', artist: 'Artist C' }
+		// Add more songs here...
 	];
 
-	// Function to find a playlist by ID
-	function getPlaylistById(id: string): Playlist | undefined {
-		return playlists.find((playlist) => playlist.id === id);
-	}
+	const dispatch = createEventDispatcher();
 
-	onMount(() => {
-		playlist = getPlaylistById(params.id);
-	});
+	// Function to handle adding a song
+	function addSong(id: number) {
+		dispatch('addSong', { id });
+	}
 </script>
 
-<main class="pb-52">
-	{#if playlist}
-		<Playlist {playlist} />
-	{:else}
-		<p class="text-red-500">Playlist not found!</p>
-	{/if}
-</main>
+<div>
+</div>

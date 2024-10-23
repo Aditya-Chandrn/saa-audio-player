@@ -17,9 +17,9 @@ public class Program
 		builder.Services.ConfigDb();
 		Console.WriteLine(EnvVariables.CLIENT_URL);
 		builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            });
+			{
+				options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+			});
 
 		builder.WebHost.UseUrls($"{EnvVariables.HOST}:{EnvVariables.PORT}");
 
