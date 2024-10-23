@@ -15,7 +15,7 @@
 	];
 
 	const handleBtnClick = () => {
-		Login('Suyesh', 'suyesh@gmail.com', '123');
+		Login('Suyesh', '123');
 	};
 </script>
 

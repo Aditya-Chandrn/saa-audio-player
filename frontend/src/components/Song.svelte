@@ -10,7 +10,7 @@
 	}
 </script>
 
-<li class="p-2 hover:bg-gray-700 cursor-pointer rounded transition-colors" on:click={handleClick}>
+<li class="p-2 hover:bg-gray-300 cursor-pointer rounded transition-colors" on:click={handleClick}>
 	<div class="flex items-center justify-between">
 		<span>{song.title} - {song.artist}</span>
 		<span class="text-gray-400">#{index + 1}</span>
