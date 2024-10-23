@@ -14,7 +14,7 @@
 		<img src={playlist.imgUrl} alt={playlist.name} class="w-32 h-32 object-cover rounded" />
 		<div>
 			<h2 class="text-2xl font-bold">{playlist.name}</h2>
-			<p class="text-gray-400">Number of songs: {playlist.songs.length}</p>
+			<p>Number of songs: {playlist.songs.length}</p>
 		</div>
 	</div>
 

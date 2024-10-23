@@ -9,13 +9,6 @@
 		url?: string;
 	}
 
-	// Props and state
-	export let song: Song = {
-		title: 'Song Title',
-		artist: 'Artist Name',
-		url: 'https://example.com/song.mp3' // Replace with actual song URL
-	};
-
 	let isPlaying = false;
 	let currentTime = 0;
 	let duration = 240;
