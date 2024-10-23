@@ -1,9 +1,7 @@
-using backend.DTO;
-using backend.Models;
+using backend.DTO.UserDTO;
 using backend.Utils;
-using Microsoft.EntityFrameworkCore;
 
-namespace backend.Services
+namespace backend.Services.UserServices
 {
   public partial class UserServices
   {

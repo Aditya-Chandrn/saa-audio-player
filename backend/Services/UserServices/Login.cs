@@ -1,10 +1,10 @@
 using backend.Config;
-using backend.DTO;
+using backend.DTO.UserDTO;
 using backend.Utils;
 using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Services
+namespace backend.Services.UserServices
 {
   public partial class UserServices
   {

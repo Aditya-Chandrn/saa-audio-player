@@ -1,4 +1,6 @@
-﻿using backend.Services;
+﻿using backend.Services.AudioServices;
+using backend.Services.PlaylistServices;
+using backend.Services.UserServices;
 using backend.Utils;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -14,6 +16,8 @@ namespace backend.Config
 			options.UseNpgsql(EnvVariables.SUPABASE_URI));
 
 			services.AddScoped<UserServices>();
+			services.AddScoped<AudioServices>();
+			services.AddScoped<PlaylistServices>();
 		}
 	}
 }

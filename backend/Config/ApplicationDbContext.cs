@@ -39,12 +39,6 @@ namespace backend.Config
 				.WithMany(a => a.PlaylistsAudios)
 				.HasForeignKey(pa => pa.AudioId);
 
-			// relation between audio and user
-			modelBuilder.Entity<Audio>()
-				.HasOne(a => a.Creator)
-				.WithMany(u => u.Audios)
-				.HasForeignKey(a => a.CreatorId);
-
 			// relation between playlist and user
 			modelBuilder.Entity<Playlist>()
 				.HasOne(p => p.Creator)

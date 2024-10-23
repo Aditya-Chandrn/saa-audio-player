@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
@@ -10,6 +11,8 @@ namespace backend.Models
     public string? ShareLink { get; set; }
     public List<PlaylistAudio> PlaylistAudios { get; set; } = [];
 
+
+    [ForeignKey("CreatorId")]
     public int CreatorId { get; set; }
     public User? Creator { get; set; }
 

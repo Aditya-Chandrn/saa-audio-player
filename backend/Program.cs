@@ -1,8 +1,6 @@
 using backend.Config;
 using backend.Routers;
-using backend.Services;
 using backend.Utils;
-using Microsoft.EntityFrameworkCore;
 
 namespace backend;
 
@@ -13,9 +11,22 @@ public class Program
 		DotNetEnv.Env.Load();
 
 		var builder = WebApplication.CreateBuilder(args);
-		// Add services to the container.
+
+		// add services
 		builder.Services.AddControllersWithViews();
 		builder.Services.ConfigDb();
+
+		builder.Services.AddCors(options =>
+		{
+			options.AddPolicy("AllowSpecificOrigins",
+				policy =>
+				{
+					policy.WithOrigins(EnvVariables.CLIENT_URL)
+								.AllowAnyHeader()
+								.AllowAnyMethod();
+				}
+					);
+		});
 
 		builder.WebHost.UseUrls($"{EnvVariables.HOST}:{EnvVariables.PORT}");
 
@@ -32,7 +43,6 @@ public class Program
 
 
 		app.UseHttpsRedirection();
-		app.UseStaticFiles();
 		app.UseRouting();
 		app.UseAuthorization();
 		app.Run();
