@@ -17,9 +17,7 @@ namespace backend.Services.UserServices
           new PrintFailure($"User '{userId}' not found");
           return new GetPlaylistResponse { StatusCode = 404, Message = "User not found" };
         }
-        Console.WriteLine(existingUser.Username);
-
-
+        
         // Prepare user data to be sent
         var playlistInfos = existingUser.Playlists.Select(playlist => new LoginResult.PlaylistInfo
         {
