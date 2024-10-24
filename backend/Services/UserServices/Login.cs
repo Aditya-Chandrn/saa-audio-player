@@ -18,23 +18,39 @@ namespace backend.Services.UserServices
     {
       try
       {
-        // check if user exists
-        var existingUser = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
+        // Check if user exists
+        var existingUser = await _context.Users
+            .Include(user => user.Playlists) // Include playlists in the query
+            .FirstOrDefaultAsync(user => user.Username == username);
+
         if (existingUser == null)
         {
           new PrintFailure($"User '{username}' not found.");
           return new LoginResult { StatusCode = 404, Message = "Invalid Credentials" };
         }
 
-        // check password
+        // Check password
         if (!BCrypt.Net.BCrypt.Verify(password, existingUser.Password))
         {
           new PrintFailure($"Wrong password entered for user '{username}'");
           return new LoginResult { StatusCode = 404, Message = "Invalid Credentials" };
         }
 
-        // prepare user data to be sent
-        var userData = new LoginResult.UserData { UserId = existingUser.Id, Username = existingUser.Username, Email = existingUser.Email, Image = existingUser.Image };
+        // Prepare user data to be sent
+        var playlistInfos = existingUser.Playlists.Select(playlist => new LoginResult.PlaylistInfo
+        {
+          PlaylistId = playlist.Id,
+          Name = playlist.Name,
+        }).ToList();
+
+        var userData = new LoginResult.UserData
+        {
+          UserId = existingUser.Id,
+          Username = existingUser.Username,
+          Image = existingUser.Image,
+          Playlists = playlistInfos // Include the playlists in the response
+        };
+
         new PrintSuccess($"User '{username}' logged in");
         return new LoginResult { StatusCode = 200, Message = "Login successful", User = userData };
       }

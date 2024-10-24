@@ -11,13 +11,9 @@ namespace backend.Models
 
     [Required(ErrorMessage = "Email required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
-    public string? Email { get; set; }
-
-    [Required(ErrorMessage = "Password required")]
     public string? Password { get; set; }
     
     public string? Image { get; set; }
-    public List<Audio> Audios { get; set; } = [];
     public List<Playlist> Playlists { get; set; } = [];
   }
 }

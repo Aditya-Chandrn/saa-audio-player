@@ -4,26 +4,26 @@ namespace backend.Routers
   {
     public static void RegisterRoutes(IEndpointRouteBuilder endpoints)
     {
-      var userGroup = endpoints.MapGroup("/api/user");
+      var userGroup = endpoints.MapGroup("api/user");
 
       userGroup.MapControllerRoute(
         name: "Login",
-        pattern: "/login",
+        pattern: "login",
         defaults: new { controller = "User", action = "Login" });
 
       userGroup.MapControllerRoute(
         name: "Signup",
-        pattern: "/signup",
+        pattern: "signup",
         defaults: new { controller = "User", action = "Signup" });
 
       userGroup.MapControllerRoute(
         name: "Edit User",
-        pattern: "/edit",
+        pattern: "edit",
         defaults: new { controller = "User", action = "Edit" });
 
       userGroup.MapControllerRoute(
         name: "Delete User",
-        pattern: "/delete",
+        pattern: "delete",
         defaults: new { controller = "User", action = "Delete" });
     }
   }

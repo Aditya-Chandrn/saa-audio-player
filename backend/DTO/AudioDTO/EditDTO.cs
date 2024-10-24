@@ -3,15 +3,15 @@ namespace backend.DTO.AudioDTO
 
   public class EditAudioRequest
   {
-    public int AudioId { get; set; } // The ID of the audio to edit
-    public int UserId { get; set; } // The ID of the user editing the audio
-    public string? Title { get; set; } // Optional: Edit audio title
-    public string? AudioBase64String { get; set; } // Optional: Edit the audio file
-    public string? Album { get; set; } // Optional: Edit album name
+    public int UserId { get; set; }
+    public int AudioId { get; set; }
+    public string? Title { get; set; }
+    public string? Album { get; set; }
   }
 
   public class EditAudioResult
   {
+    public CreateAudioResult.AudioData? Audio { get; set; }
     public int StatusCode { get; set; }
     public string? Message { get; set; }
   }
