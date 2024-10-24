@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
-	import { get } from 'svelte/store';
 	import Playlist from '@/components/Playlist.svelte';
+	import { getDefaultPlaylist } from '@/apiCalls/userApiCalls';
 
-	// Define the playlist type
+	// Define the playlist and audio types
 	type Audio = {
 		id: number;
 		title: string;
-		artist: string;
+		artist?: string;
+		album?: string;
 	};
 
 	type Playlist = {
@@ -19,67 +19,20 @@
 	};
 
 	let playlist: Playlist | undefined;
-	let params = get(page).params;
 
-	// // Sample playlists array
-	// let playlists: Playlist[] = [
-	// 	{
-	// 		id: 1,
-	// 		name: 'Chill Vibes',
-	// 		imgUrl: 'https://via.placeholder.com/150',
-	// 		audio: [
-	// 			{
-	// 				id: 1,
-	// 				title: 'Song A',
-	// 				artist: 'Artist A'
-	// 			},
-	// 			{
-	// 				id: 2,
-	// 				title: 'Song B',
-	// 				artist: 'Artist B'
-	// 			}
-	// 		]
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		name: 'Workout Mix',
-	// 		imgUrl: 'https://via.placeholder.com/150',
-	// 		audio: [
-	// 			{
-	// 				id: 1,
-	// 				title: 'Song C',
-	// 				artist: 'Artist C'
-	// 			},
-	// 			{
-	// 				id: 2,
-	// 				title: 'Song D',
-	// 				artist: 'Artist D'
-	// 			}
-	// 		]
-	// 	}
-	// ];
-
-	// Function to find a playlist by ID
-	
-	function getPlaylistById(id: number): Playlist | undefined {
-		return playlists.find((playlist) => playlist.id === id);
-	}
-
-	// Function to remove a audio from the playlist
+	// Function to remove a song from the playlist
 	function removeSongFromPlaylist(index: number) {
 		if (playlist) {
 			playlist = {
 				...playlist,
 				audio: playlist.audio.filter((_, i) => i !== index)
 			};
-			// Update the playlists array as well
-			playlists = playlists.map((p) => (p.id === playlist?.id ? playlist : p));
 		}
 	}
 
+	// On mount, fetch the playlist and update the UI
 	onMount(() => {
-		const playlistId = Number(params.id);
-		playlist = getPlaylistById(playlistId);
+		getDefaultPlaylist();
 	});
 </script>
 

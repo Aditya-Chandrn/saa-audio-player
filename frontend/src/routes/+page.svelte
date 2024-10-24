@@ -1,4 +1,5 @@
 <script lang="ts">
+	import LocalStorage from '@/utils/localStorage';
 	import { onMount } from 'svelte';
 
 	type Audio = {
@@ -12,7 +13,7 @@
 
 	// onMount fetches the playlist when the component is mounted
 	onMount(async () => {
-		const playlist = await getPlaylist();
+		const playlists = LocalStorage.getItem("pla")
 		if (playlist && playlist.songs) {
 			audios = playlist.songs;
 		}

@@ -1,8 +1,5 @@
 <script lang="ts">
 	import '@/app.css';
-	import { Login } from '@/apiCalls/user/login';
-	import { goto } from '$app/navigation';
-
 
 	interface NavOption {
 		page: string;
@@ -16,7 +13,6 @@
 		{ page: 'Playlist', link: `/${userSlug}/playlist` },
 		{ page: 'Login', link: '/login' }
 	];
-
 </script>
 
 <nav class="bg-theme h-[80px] flex items-center px-[4vw] bg-green-300">
