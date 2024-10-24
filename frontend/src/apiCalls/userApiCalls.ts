@@ -9,7 +9,7 @@ async function login(username: string, password: string){
 	try{
 		const response: any = await axios.post(url, {username, password})
 		LocalStorage.setItem("user", response.data.user)
-		goto("/");
+		goto("/music");
 	} catch (error: any){
 		alert(error.response.data.message);
 	}
@@ -22,7 +22,7 @@ async function signup(username: string, password: string) {
 	try{
 		const response: any = await axios.post(url, {username, password})
 		LocalStorage.setItem("user", response.data.user)
-		goto("/");
+		goto("/music");
 	} catch (error: any){
 		alert(error.response.data.message);
 	}
@@ -57,10 +57,10 @@ async function deleteUser(){
 ///////// GET USER DEFAULT PLAYLIST /////////////
 async function getDefaultPlaylist(){
 	const userId: number = LocalStorage.getItem("user").id;
-	const url: string = `${PUBLIC_SERVER_URL}/user/get-playlist`;
+	const url: string = `${PUBLIC_SERVER_URL}/user/get-playlists`;
 	try {
 		const response = await axios.get(url, { params: {userId}});
-		return response.data.playlists;
+		LocalStorage.setItem("playlists", response.data.playlists);
 	} catch (error:any) {
 		alert(error.response.data.message);
 	}
