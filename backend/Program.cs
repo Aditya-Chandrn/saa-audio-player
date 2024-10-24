@@ -15,11 +15,10 @@ public class Program
 		// add services
 		builder.Services.AddControllersWithViews();
 		builder.Services.ConfigDb();
-		Console.WriteLine(EnvVariables.CLIENT_URL);
 		builder.Services.AddCors(options =>
-			{
-				options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-			});
+						{
+							options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+						});
 
 		builder.WebHost.UseUrls($"{EnvVariables.HOST}:{EnvVariables.PORT}");
 
@@ -38,6 +37,7 @@ public class Program
 		app.UseRouting();
 		app.UseCors("CorsPolicy");
 		app.UseAuthorization();
+		app.MapControllers();
 		app.Run();
 	}
 }

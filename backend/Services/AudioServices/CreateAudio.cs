@@ -1,5 +1,5 @@
 using backend.Config;
-using backend.DTO.AudioDTO;
+using backend.DTO;
 using backend.Models;
 using backend.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -16,46 +16,69 @@ namespace backend.Services.AudioServices
     }
 
     // Create audio
-    public async Task<CreateAudioResult> CreateAudio(int userId, string title, string audioBase64String, string? album = null)
+    public async Task<AudioResponse> CreateAudio(int? userId, string? audioBase64String, string? title, string? album = null)
     {
+      // check if username already exists
+      var existingUser = await _context.Users.FindAsync(userId);
+
+      if (existingUser == null)
+      {
+        new PrintFailure($"User '{userId}' not found");
+        return new AudioResponse { StatusCode = 404, Message = "User not found" };
+      }
+
       if (string.IsNullOrEmpty(audioBase64String))
       {
         new PrintFailure($"Audio content not provided by user '{userId}'");
-        return new CreateAudioResult { StatusCode = 400, Message = "Audio content required" };
+        return new AudioResponse { StatusCode = 400, Message = "Audio content required" };
       }
       if (string.IsNullOrEmpty(title))
       {
         new PrintFailure($"Audio title not provided by user '{userId}'");
-        return new CreateAudioResult { StatusCode = 400, Message = "Audio title required" };
+        return new AudioResponse { StatusCode = 400, Message = "Audio title required" };
       }
 
       try
       {
+        Console.WriteLine("****************** Before creating audio ********************");
         // Create a new audio entity
         var newAudio = new Audio
         {
           Title = title,
           AudioBase64String = audioBase64String,
-          Album = album,
+          Album = album
         };
+
+        Console.WriteLine("****************** After creating audio ********************");
 
         // Add the audio to the database
         _context.Audios.Add(newAudio);
         await _context.SaveChangesAsync();
 
-        var defaultPlaylist = await _context.Playlists.FirstOrDefaultAsync(p => p.Name == "Default" && p.CreatorId == userId);
+        Console.WriteLine("****************** After saving audio ********************");
+
+        var defaultPlaylist = await _context.Playlists.FirstOrDefaultAsync(p => p.Name == $"{existingUser.Username}_Default" && p.CreatorId == userId);
         if (defaultPlaylist != null)
         {
-          newAudio.PlaylistsAudios.Add(new PlaylistAudio { PlaylistId = defaultPlaylist.Id, AudioId = newAudio.Id });
-          await _context.SaveChangesAsync();
+          // Add the relationship to PlaylistAudio
+          var playlistAudio = new PlaylistAudio
+          {
+            PlaylistId = defaultPlaylist.Id,
+            AudioId = newAudio.Id
+          };
+
+          _context.PlaylistAudios.Add(playlistAudio); // Add the relationship
+          await _context.SaveChangesAsync(); // Save the changes
         }
 
-        return new CreateAudioResult { AudioId = newAudio.Id, StatusCode = 200, Message = "Audio created successfully." };
+        var audio = new AudioData { AudioId = newAudio.Id };
+        new PrintSuccess($"Created audio '{newAudio.Id}' by user '{userId}'");
+        return new AudioResponse { Audio = audio, StatusCode = 200, Message = "Audio created successfully." };
       }
       catch (Exception exception)
       {
-        new PrintError("Error creating new audio", exception);
-        return new CreateAudioResult { StatusCode = 500, Message = "Error creating new audio." };
+        new PrintError($"Error creating new audio by user '{userId}'", exception);
+        return new AudioResponse { StatusCode = 500, Message = "Error creating new audio." };
       }
     }
   }
