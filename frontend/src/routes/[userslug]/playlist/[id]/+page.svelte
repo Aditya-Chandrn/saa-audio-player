@@ -5,75 +5,98 @@
 	import Playlist from '@/components/Playlist.svelte';
 
 	// Define the playlist type
-	type Song = {
+	type Audio = {
+		id: number;
 		title: string;
 		artist: string;
-		url: string;
-		// imgUrl: string;
 	};
 
 	type Playlist = {
-		id: string;
+		id: number;
 		name: string;
 		imgUrl: string;
-		songs: Song[];
+		audio: Audio[];
 	};
 
 	let playlist: Playlist | undefined;
-
 	let params = get(page).params;
 
 	// Sample playlists array
-	const playlists: Playlist[] = [
+	let playlists: Playlist[] = [
 		{
-			id: '1',
+			id: 1,
 			name: 'Chill Vibes',
 			imgUrl: 'https://via.placeholder.com/150',
-			songs: [
+			audio: [
 				{
+					id: 1,
 					title: 'Song A',
-					artist: 'Artist A',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+					artist: 'Artist A'
 				},
 				{
+					id: 2,
 					title: 'Song B',
-					artist: 'Artist B',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+					artist: 'Artist B'
 				}
 			]
 		},
 		{
-			id: '2',
+			id: 2,
 			name: 'Workout Mix',
 			imgUrl: 'https://via.placeholder.com/150',
-			songs: [
+			audio: [
 				{
+					id: 1,
 					title: 'Song C',
-					artist: 'Artist C',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+					artist: 'Artist C'
 				},
 				{
+					id: 2,
 					title: 'Song D',
-					artist: 'Artist D',
-					url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+					artist: 'Artist D'
 				}
 			]
 		}
 	];
 
 	// Function to find a playlist by ID
-	function getPlaylistById(id: string): Playlist | undefined {
+	function getPlaylistById(id: number): Playlist | undefined {
 		return playlists.find((playlist) => playlist.id === id);
 	}
 
+	// Function to add a new audio to the playlist
+	function addAudioToPlaylist(newSong: Audio) {
+		if (playlist) {
+			playlist = {
+				...playlist,
+				audio: [...playlist.audio, newSong]
+			};
+			// Update the playlists array as well
+			playlists = playlists.map((p) => (p.id === playlist?.id ? playlist : p));
+		}
+	}
+
+	// Function to remove a audio from the playlist
+	function removeSongFromPlaylist(index: number) {
+		if (playlist) {
+			playlist = {
+				...playlist,
+				audio: playlist.audio.filter((_, i) => i !== index)
+			};
+			// Update the playlists array as well
+			playlists = playlists.map((p) => (p.id === playlist?.id ? playlist : p));
+		}
+	}
+
 	onMount(() => {
-		playlist = getPlaylistById(params.id);
+		const playlistId = Number(params.id);
+		playlist = getPlaylistById(playlistId);
 	});
 </script>
 
 <main class="pb-52">
 	{#if playlist}
-		<Playlist {playlist} />
+		<Playlist {playlist} onAudioAdd={addAudioToPlaylist} onSongRemove={removeSongFromPlaylist} />
 	{:else}
 		<p class="text-red-500">Playlist not found!</p>
 	{/if}

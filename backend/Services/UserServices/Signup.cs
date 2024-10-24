@@ -45,19 +45,12 @@ namespace backend.Services.UserServices
         // Save changes to include the new playlist in the database
         await _context.SaveChangesAsync();
 
-        // Map the newly created playlist to PlaylistInfo format
-        var playlistInfo = new LoginResult.PlaylistInfo
-        {
-          PlaylistId = defaultPlaylist.Id,
-          Name = defaultPlaylist.Name,
-        };
 
         // Prepare the user data to send in the response
         var userData = new LoginResult.UserData
         {
           UserId = newUser.Id,
           Username = newUser.Username,
-          Playlists = new List<LoginResult.PlaylistInfo> { playlistInfo } // Only include the default playlist
         };
 
         new PrintSuccess($"Created user with username '{username}'");

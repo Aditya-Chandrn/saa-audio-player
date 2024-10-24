@@ -3,10 +3,11 @@
 	import { musicStore } from '../stores/musicStore';
 
 	// Types
-	interface Song {
+	interface Audio {
+		id: number;
 		title: string;
 		artist: string;
-		url?: string;
+		url: string;
 	}
 
 	let isPlaying = false;
@@ -132,7 +133,7 @@
 	class="bg-gray-900 text-white fixed bottom-0 left-0 w-full p-4 flex flex-col items-center h-40"
 >
 	<div class="flex flex-col items-center">
-		<h2 class="text-xl font-semibold">{currentSong?.title || 'No song selected'}</h2>
+		<h2 class="text-xl font-semibold">{currentSong?.title || 'No audio selected'}</h2>
 		<p class="text-gray-400">{currentSong?.artist || ''}</p>
 	</div>
 

@@ -36,19 +36,11 @@ namespace backend.Services.UserServices
           return new LoginResult { StatusCode = 404, Message = "Invalid Credentials" };
         }
 
-        // Prepare user data to be sent
-        var playlistInfos = existingUser.Playlists.Select(playlist => new LoginResult.PlaylistInfo
-        {
-          PlaylistId = playlist.Id,
-          Name = playlist.Name,
-        }).ToList();
-
         var userData = new LoginResult.UserData
         {
           UserId = existingUser.Id,
           Username = existingUser.Username,
           Image = existingUser.Image,
-          Playlists = playlistInfos // Include the playlists in the response
         };
 
         new PrintSuccess($"User '{username}' logged in");
