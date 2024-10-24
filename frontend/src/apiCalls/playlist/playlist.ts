@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { PlaylistDTO } from '../DTO/playlistDTO'; // Adjust path as needed
+import type { PlaylistDTO } from './playlistDTO'; // Adjust path as needed
 import { PUBLIC_SERVER_URL } from '$env/static/public';
 
 // API Call to Create Playlist

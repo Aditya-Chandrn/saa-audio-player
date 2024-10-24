@@ -16,9 +16,15 @@ public class Program
 		builder.Services.AddControllersWithViews();
 		builder.Services.ConfigDb();
 		builder.Services.AddCors(options =>
+<<<<<<< HEAD
 						{
 							options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 						});
+=======
+			{
+				options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+			});
+>>>>>>> 749e031314a3f01a71e37bd57b78d48993d14611
 
 		builder.WebHost.UseUrls($"{EnvVariables.HOST}:{EnvVariables.PORT}");
 
