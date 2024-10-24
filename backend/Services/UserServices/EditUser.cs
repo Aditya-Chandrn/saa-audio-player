@@ -7,7 +7,7 @@ namespace backend.Services.UserServices
 {
   public partial class UserServices
   {
-    public async Task<EditUserResult> EditUser(int userId, string? username = null, string? email = null, string? password = null, string? image = null)
+    public async Task<EditUserResult> EditUser(int userId, string? username, string? password = null, string? image = null)
     {
       try
       {
@@ -27,33 +27,14 @@ namespace backend.Services.UserServices
           existingUser.Password = hashedPassword;
         }
 
-        // update username
-        if (username != null)
-        {
-          var duplicateUser = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
-          if (duplicateUser != null)
-          {
-            new PrintFailure($"User with '{username}' already exists");
-            return new EditUserResult { StatusCode = 400, Message = "Username already exists" };
-          }
-
-          existingUser.Username = username;
-        }
-
-        // update email
-        if (email != null) existingUser.Email = email;
-
         // update image
-        if (image != null)
-        {
-          // TODO: handle image update
-        }
+        if (image != null) existingUser.Image = image;
 
         Console.WriteLine(existingUser.Username);
 
         await _context.SaveChangesAsync();
 
-        var userData = new EditUserResult.UserData { UserId = existingUser.Id, Username = existingUser.Username, Email = existingUser.Email, Image = existingUser.Image };
+        var userData = new EditUserResult.UserData { UserId = existingUser.Id, Username = existingUser.Username, Image = existingUser.Image };
         new PrintSuccess($"Edited user '{userId}'");
         return new EditUserResult { StatusCode = 200, Message = "User details edited successfully", User = userData };
       }

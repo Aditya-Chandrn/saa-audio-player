@@ -11,6 +11,11 @@ namespace backend.Services.UserServices
       {
         // check if username already exists
         var existingUser = await _context.Users.FindAsync(userId);
+        if (existingUser == null)
+        {
+          new PrintFailure($"User '{userId}' not found");
+          return new DeleteUserResult { StatusCode = 404, Message = "User not found" };
+        }
 
         if (existingUser == null)
         {

@@ -7,11 +7,11 @@ namespace backend.Services.UserServices
 {
   public partial class UserServices
   {
-    public async Task<SignupResult> Signup(string username, string email, string password)
+    public async Task<SignupResult> Signup(string username, string password)
     {
       try
       {
-        // check if username already exists
+        // Check if username already exists
         var existingUser = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
         if (existingUser != null)
         {
@@ -19,29 +19,42 @@ namespace backend.Services.UserServices
           return new SignupResult { StatusCode = 400, Message = "Username already exists" };
         }
 
-        existingUser = await _context.Users.FirstOrDefaultAsync(user => user.Email == email);
-        if (existingUser != null)
-        {
-          new PrintFailure($"Email '{email}' already registered");
-          return new SignupResult { StatusCode = 400, Message = "Email already registered" };
-        }
-
-        // hash password
+        // Hash password
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-        // create new user
+        // Create new user
         var newUser = new User
         {
           Username = username,
-          Email = email,
-          Password = hashedPassword
+          Password = hashedPassword,
+          Playlists = new List<Playlist>() // Initialize the Playlists collection
         };
 
         _context.Users.Add(newUser);
+        await _context.SaveChangesAsync(); // Save the new user to get the Id
+
+        // Create default playlist for the user
+        var defaultPlaylist = new Playlist
+        {
+          Name = $"{username}_Default",
+          CreatorId = newUser.Id // Link the playlist to the new user
+        };
+
+        _context.Playlists.Add(defaultPlaylist);
+
+        // Save changes to include the new playlist in the database
         await _context.SaveChangesAsync();
 
-        new PrintSuccess($"Created user with username '{username}' and email '{email}'");
-        return new SignupResult { StatusCode = 200, Message = "User created successfully" };
+
+        // Prepare the user data to send in the response
+        var userData = new LoginResult.UserData
+        {
+          UserId = newUser.Id,
+          Username = newUser.Username,
+        };
+
+        new PrintSuccess($"Created user with username '{username}'");
+        return new SignupResult { User = userData, StatusCode = 200, Message = "User created successfully" };
       }
       catch (Exception exception)
       {

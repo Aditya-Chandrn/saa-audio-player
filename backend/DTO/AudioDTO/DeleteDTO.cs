@@ -1,11 +1,9 @@
 namespace backend.DTO.AudioDTO
 {
-
-
   public class DeleteAudioRequest
   {
-    public int AudioId { get; set; } // The ID of the audio to delete
-    public int UserId { get; set; } // Ensure the correct user is deleting their own audio
+    public int AudioId { get; set; }
+    public int UserId { get; set; } 
   }
 
   public class DeleteAudioResult
