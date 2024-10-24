@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let audio: { title: string; artist: string; url: string };
+	export let audio: { id: number; title: string; artist?: string; album?: string };
 	export let playlist: {
 		id: number;
 		name: string;
@@ -17,14 +17,7 @@
 		<p class="text-gray-600">{audio.artist}</p>
 	</div>
 	<div class="flex space-x-2">
-		<a
-			href={audio.url}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="text-blue-500 hover:text-blue-700"
-		>
-			Play
-		</a>
+		<button class=""> Play </button>
 		{#if isEditMode}
 			<button class="text-red-500 hover:text-red-700" on:click={onRemove}> Remove </button>
 		{/if}

@@ -6,7 +6,8 @@
 	type Audio = {
 		id: number;
 		title: string;
-		artist: string;
+		artist?: string;
+		album?: string;
 	};
 
 	type Playlist = {
@@ -50,7 +51,7 @@
 			{#if isEditMode}
 				<button
 					class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded"
-					on:click={addSong}
+					on:click={() => {}}
 				>
 					+ Add Song
 				</button>
