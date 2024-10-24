@@ -13,10 +13,8 @@
 
 	// onMount fetches the playlist when the component is mounted
 	onMount(async () => {
-		const playlists = LocalStorage.getItem("pla")
-		if (playlist && playlist.songs) {
-			audios = playlist.songs;
-		}
+		const playlists = LocalStorage.getItem('playlists');
+		console.log(playlists);
 	});
 </script>
 
