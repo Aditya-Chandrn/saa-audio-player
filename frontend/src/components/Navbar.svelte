@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '@/app.css';
-	import { Login } from '@/apiCalls/user/login';
+	import { login } from '@/apiCalls/userApiCalls';
 	import { goto } from '$app/navigation';
 
 

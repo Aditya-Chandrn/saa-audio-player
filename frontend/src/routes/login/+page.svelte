@@ -8,17 +8,7 @@
   const handleLogin = async () => {
     if (username && password) {
       try {
-        // Calling the login API with username and password
-        const response = await login(username, password);
-
-        if (response.ok) {
-          const user = await response.json(); // Assume you get user data from response
-          localStorage.setItem('user', JSON.stringify(user)); // Storing user details in localStorage
-          alert('Login successful');
-          goto('/home'); // Redirecting to home page or wherever needed
-        } else {
-          alert('Invalid username or password');
-        }
+        await login(username, password)
       } catch (error) {
         console.error('Login failed:', error);
         alert('Login failed. Please try again.');
