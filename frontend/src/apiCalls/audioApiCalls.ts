@@ -6,7 +6,7 @@ import { getDefaultPlaylist } from './userApiCalls';
 
 ///////// CREATE AUDIO /////////////
 async function createAudio(audioBase64String: string, title: string, album: string | null){
-  const userId: number = LocalStorage.getItem("user").id;
+  const userId: number = LocalStorage.getItem("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/audio/create`;
 	try{
 		const response: any = await axios.post(url, {userId, audioBase64String, title, album});

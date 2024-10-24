@@ -6,7 +6,7 @@ import { getDefaultPlaylist } from './userApiCalls';
 
 ///////// CREATE PLAYLIST /////////////
 async function createPlaylist(name: string){
-  const userId: number = LocalStorage.getItem("user").id;
+  const userId: number = LocalStorage.getItem("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/playlist/create`;
 	try{
 		const response: any = await axios.post(url, {userId, name});
