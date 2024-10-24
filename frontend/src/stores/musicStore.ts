@@ -4,8 +4,8 @@ import { writable } from 'svelte/store';
 interface Audio {
 	id: number;
 	title: string;
-	artist: string;
-	url: string;
+	artist?: string;
+	album?: string;
 }
 
 interface PlayerState {

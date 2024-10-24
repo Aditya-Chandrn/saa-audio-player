@@ -21,59 +21,48 @@
 	let playlist: Playlist | undefined;
 	let params = get(page).params;
 
-	// Sample playlists array
-	let playlists: Playlist[] = [
-		{
-			id: 1,
-			name: 'Chill Vibes',
-			imgUrl: 'https://via.placeholder.com/150',
-			audio: [
-				{
-					id: 1,
-					title: 'Song A',
-					artist: 'Artist A'
-				},
-				{
-					id: 2,
-					title: 'Song B',
-					artist: 'Artist B'
-				}
-			]
-		},
-		{
-			id: 2,
-			name: 'Workout Mix',
-			imgUrl: 'https://via.placeholder.com/150',
-			audio: [
-				{
-					id: 1,
-					title: 'Song C',
-					artist: 'Artist C'
-				},
-				{
-					id: 2,
-					title: 'Song D',
-					artist: 'Artist D'
-				}
-			]
-		}
-	];
+	// // Sample playlists array
+	// let playlists: Playlist[] = [
+	// 	{
+	// 		id: 1,
+	// 		name: 'Chill Vibes',
+	// 		imgUrl: 'https://via.placeholder.com/150',
+	// 		audio: [
+	// 			{
+	// 				id: 1,
+	// 				title: 'Song A',
+	// 				artist: 'Artist A'
+	// 			},
+	// 			{
+	// 				id: 2,
+	// 				title: 'Song B',
+	// 				artist: 'Artist B'
+	// 			}
+	// 		]
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		name: 'Workout Mix',
+	// 		imgUrl: 'https://via.placeholder.com/150',
+	// 		audio: [
+	// 			{
+	// 				id: 1,
+	// 				title: 'Song C',
+	// 				artist: 'Artist C'
+	// 			},
+	// 			{
+	// 				id: 2,
+	// 				title: 'Song D',
+	// 				artist: 'Artist D'
+	// 			}
+	// 		]
+	// 	}
+	// ];
 
 	// Function to find a playlist by ID
+	
 	function getPlaylistById(id: number): Playlist | undefined {
 		return playlists.find((playlist) => playlist.id === id);
-	}
-
-	// Function to add a new audio to the playlist
-	function addAudioToPlaylist(newSong: Audio) {
-		if (playlist) {
-			playlist = {
-				...playlist,
-				audio: [...playlist.audio, newSong]
-			};
-			// Update the playlists array as well
-			playlists = playlists.map((p) => (p.id === playlist?.id ? playlist : p));
-		}
 	}
 
 	// Function to remove a audio from the playlist
@@ -96,7 +85,7 @@
 
 <main class="pb-52">
 	{#if playlist}
-		<Playlist {playlist} onAudioAdd={addAudioToPlaylist} onSongRemove={removeSongFromPlaylist} />
+		<Playlist {playlist} onSongRemove={removeSongFromPlaylist} />
 	{:else}
 		<p class="text-red-500">Playlist not found!</p>
 	{/if}
