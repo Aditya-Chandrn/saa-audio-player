@@ -19,12 +19,17 @@ namespace backend.Routers
       userGroup.MapControllerRoute(
         name: "Edit User",
         pattern: "edit",
-        defaults: new { controller = "User", action = "Edit" });
+        defaults: new { controller = "User", action = "EditUser" });
 
       userGroup.MapControllerRoute(
         name: "Delete User",
         pattern: "delete",
-        defaults: new { controller = "User", action = "Delete" });
+        defaults: new { controller = "User", action = "DeleteUser" });
+
+      userGroup.MapControllerRoute(
+        name: "Get User Playlists",
+        pattern: "get-playlists",
+        defaults: new { controller = "User", action = "GetUserPlaylists" });
     }
   }
 }

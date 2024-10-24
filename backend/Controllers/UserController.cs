@@ -73,5 +73,16 @@ namespace backend.Controllers
       var result = await _userServices.DeleteUser(deleteUserRequest.UserId);
       return StatusCode(result.StatusCode, new { result.Message });
     }
+
+    [HttpGet("get-playlists")]
+  public async Task<IActionResult> GetUserPlaylists([FromQuery] GetPlaylistRequest getPlaylistRequest)
+    {
+      if (getPlaylistRequest == null)
+        return BadRequest(new { Message = "User credentials not found" });
+
+      // delete user
+      var result = await _userServices.GetUserPlaylists(getPlaylistRequest.UserId);
+      return StatusCode(result.StatusCode, new { result.Message, result.Playlists });
+    }
   }
 }
