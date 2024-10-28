@@ -1,12 +1,12 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_SERVER_URL } from '$env/static/public';
-import LocalStorage from '@/utils/localStorage';
 import axios from 'axios';
-import { getDefaultPlaylist } from './userApiCalls';
+import { getUserPlaylists } from './userApiCalls';
+import CookieStorage from '@/utils/cookiesManagement';
 
 ///////// CREATE PLAYLIST /////////////
 async function createPlaylist(name: string){
-  const userId: number = LocalStorage.getItem("user").userId;
+  const userId: number = CookieStorage.get("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/playlist/create`;
 	try{
 		const response: any = await axios.post(url, {userId, name});
@@ -34,7 +34,7 @@ async function editPlaylist(playlistId: number, name: string) {
 	try{
 		const response: any = await axios.patch(url, {playlistId, name})
 		alert(response.data.message);
-		return await getDefaultPlaylist();
+		return await getUserPlaylists();
 	} catch (error: any){
 		alert(error.response.data.message);
 		
@@ -47,14 +47,14 @@ async function deletePlaylist(playlistId: number) {
 	try {
 		const response = await axios.delete(url, {data: playlistId});
 		alert(response.data.message);
-    goto("/music")
+    goto("/home")
 	} catch (error:any) {
 		alert(error.response.data.message);
 	}
 };
 
 ///////// ADD AUDIO /////////////
-async function addAudio(playlistId: number, audioId: number) {
+async function addAudioToPlaylist(playlistId: number, audioId: number) {
 	const url: string = `${PUBLIC_SERVER_URL}/playlist/add-audio`;
 	try {
 		const response = await axios.post(url, {playlistId, audioId});
@@ -66,7 +66,7 @@ async function addAudio(playlistId: number, audioId: number) {
 };
 
 ///////// REMOVE AUDIO /////////////
-async function removeAudio(playlistId: number, audioId: number) {
+async function removeAudioFromPlaylist(playlistId: number, audioId: number) {
 	const url: string = `${PUBLIC_SERVER_URL}/playlist/remove-audio`;
 	try {
 		const response = await axios.post(url, {playlistId, audioId});
@@ -79,4 +79,4 @@ async function removeAudio(playlistId: number, audioId: number) {
 
 
 
-export {createPlaylist, getPlaylist, editPlaylist, deletePlaylist, addAudio, removeAudio};
+export {createPlaylist, getPlaylist, editPlaylist, deletePlaylist, addAudioToPlaylist, removeAudioFromPlaylist};

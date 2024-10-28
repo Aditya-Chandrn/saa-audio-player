@@ -4,9 +4,9 @@ using backend.Utils;
 
 namespace backend.Config
 {
-	public class ApplicationDbContext: DbContext
+	public class ApplicationDbContext : DbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
 		public DbSet<User> Users { get; set; }
 		public DbSet<Audio> Audios { get; set; }
@@ -14,12 +14,12 @@ namespace backend.Config
 		public DbSet<PlaylistAudio> PlaylistAudios { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql(EnvVariables.SUPABASE_URI, 
-            npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
-            .EnableSensitiveDataLogging()
-            .LogTo(Console.WriteLine, LogLevel.Information);
-    }
+		{
+			optionsBuilder.UseNpgsql(EnvVariables.SUPABASE_URI,
+					npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
+					.EnableSensitiveDataLogging()
+					.LogTo(Console.WriteLine, LogLevel.Information);
+		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -32,18 +32,21 @@ namespace backend.Config
 			modelBuilder.Entity<PlaylistAudio>()
 				.HasOne(pa => pa.Playlist)
 				.WithMany(p => p.PlaylistAudios)
-				.HasForeignKey(pa => pa.PlaylistId);
+				.HasForeignKey(pa => pa.PlaylistId)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<PlaylistAudio>()
 				.HasOne(pa => pa.Audio)
 				.WithMany(a => a.PlaylistsAudios)
-				.HasForeignKey(pa => pa.AudioId);
+				.HasForeignKey(pa => pa.AudioId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			// relation between playlist and user
 			modelBuilder.Entity<Playlist>()
 				.HasOne(p => p.Creator)
 				.WithMany(u => u.Playlists)
-				.HasForeignKey(p => p.CreatorId);
+				.HasForeignKey(p => p.CreatorId)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

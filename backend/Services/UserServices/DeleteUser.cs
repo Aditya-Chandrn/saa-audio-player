@@ -24,6 +24,7 @@ namespace backend.Services.UserServices
         }
 
         _context.Users.Remove(existingUser);
+
         await _context.SaveChangesAsync();
 
         new PrintSuccess($"Deleted user '{userId}' ");

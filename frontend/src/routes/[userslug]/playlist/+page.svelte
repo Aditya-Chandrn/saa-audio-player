@@ -1,47 +1,20 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { getUserPlaylists } from '@/apiCalls/userApiCalls';
+	import type { PlaylistType } from '@/data/types';
+	import { onMount } from 'svelte';
 	export let data: { userslug: string };
 
-	// Define Playlist type
-	interface PlaylistList {
-		id: number;
-		name: string;
-		description: string;
-		imageUrl: string;
-	}
-
-	// Playlist data
-	// let playlists: PlaylistList[] = [
-	// 	{
-	// 		id: 1,
-	// 		name: 'Chill Vibes',
-	// 		description: 'Relax and unwind with these chilled out tracks.',
-	// 		imageUrl: 'https://via.placeholder.com/150'
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		name: 'Top Hits',
-	// 		description: 'The hottest tracks right now.',
-	// 		imageUrl: 'https://via.placeholder.com/150'
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		name: 'Indie Anthems',
-	// 		description: 'The best indie music around.',
-	// 		imageUrl: 'https://via.placeholder.com/150'
-	// 	},
-	// 	{
-	// 		id: 4,
-	// 		name: 'Workout Beats',
-	// 		description: 'High-energy beats to power your workout.',
-	// 		imageUrl: 'https://via.placeholder.com/150'
-	// 	}
-	// ];
+	let playlists: PlaylistType[] = [];
 
 	// Handle opening playlist
 	function openPlaylist(playlistId: string) {
 		goto(`/${data.userslug}/playlist/${playlistId}`);
 	}
+
+	onMount(async () => {
+		playlists = await getUserPlaylists();
+	});
 </script>
 
 <!-- Playlist Section -->
@@ -55,17 +28,16 @@
 				role="button"
 				tabindex="0"
 				aria-label={`Open playlist ${playlist.name}`}
-				on:click={() => openPlaylist(playlist.id.toString())}
+				on:click={() => openPlaylist(playlist.playlistId.toString())}
 				on:keydown={(e) =>
-					(e.key === 'Enter' || e.key === ' ') && openPlaylist(playlist.id.toString())}
+					(e.key === 'Enter' || e.key === ' ') && openPlaylist(playlist.playlistId.toString())}
 			>
 				<img
 					class="w-full h-40 object-cover rounded-md mb-4"
-					src={playlist.imageUrl}
+					src={playlist.imageBase64String}
 					alt={playlist.name}
 				/>
 				<h2 class="text-xl font-semibold">{playlist.name}</h2>
-				<p class="text-sm text-gray-400 mt-2">{playlist.description}</p>
 			</div>
 		{/each}
 	</div>

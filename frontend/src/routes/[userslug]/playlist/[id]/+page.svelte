@@ -1,44 +1,23 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { getUserPlaylists } from '@/apiCalls/userApiCalls';
+	import type { PlaylistType } from '@/data/types';
 	import Playlist from '@/components/Playlist.svelte';
-	import { getDefaultPlaylist } from '@/apiCalls/userApiCalls';
+	import { derived, get } from 'svelte/store';
+	import { page } from '$app/stores';
 
-	// Define the playlist and audio types
-	type Audio = {
-		id: number;
-		title: string;
-		artist?: string;
-		album?: string;
-	};
-
-	type Playlist = {
-		id: number;
-		name: string;
-		imgUrl: string;
-		audio: Audio[];
-	};
-
-	let playlist: Playlist | undefined;
-
-	// Function to remove a song from the playlist
-	function removeSongFromPlaylist(index: number) {
-		if (playlist) {
-			playlist = {
-				...playlist,
-				audio: playlist.audio.filter((_, i) => i !== index)
-			};
-		}
-	}
+	let playlistId: number;
 
 	// On mount, fetch the playlist and update the UI
 	onMount(() => {
-		getDefaultPlaylist();
-	});
+		playlistId = Number(get(page).params.id);
+		console.log(playlistId)
+	})
 </script>
 
 <main class="pb-52">
-	{#if playlist}
-		<Playlist {playlist} onSongRemove={removeSongFromPlaylist} />
+	{#if playlistId}
+		<Playlist {playlistId} />
 	{:else}
 		<p class="text-red-500">Playlist not found!</p>
 	{/if}

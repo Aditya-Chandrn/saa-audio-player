@@ -19,7 +19,7 @@
   };
 
   function redirectToSignup() {
-    goto('/signup');
+    goto('/account/signup');
   }
 </script>
 

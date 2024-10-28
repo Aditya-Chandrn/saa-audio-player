@@ -46,7 +46,7 @@ namespace backend.Controllers
 				return BadRequest(new { Message = "Playlist details not found" });
 
 			// Edit playlist
-			var result = await _playlistServices.EditPlaylist(editRequest.PlaylistId, editRequest.Name);
+			var result = await _playlistServices.EditPlaylist(editRequest.PlaylistId, editRequest.Name, editRequest.ImageBase64String);
 			return StatusCode(result.StatusCode, new { result.Message, result.Playlist });
 		}
 

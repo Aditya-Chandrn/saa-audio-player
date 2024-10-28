@@ -17,6 +17,7 @@ namespace backend.Services.PlaylistServices
                                                       {
                                                         p.Id,
                                                         p.Name,
+                                                        p.ImageBase64String,
                                                         Audios = p.PlaylistAudios.Select(pa => new
                                                         {
                                                           pa.Audio.Id,
@@ -36,6 +37,7 @@ namespace backend.Services.PlaylistServices
         {
           PlaylistId = existingPlaylist.Id,
           Name = existingPlaylist.Name,
+          ImageBase64String = existingPlaylist.ImageBase64String,
           Audios = existingPlaylist.Audios.Select(audio => new AudioInfo
           {
             AudioId = audio.Id,

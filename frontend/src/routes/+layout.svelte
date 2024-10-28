@@ -1,25 +1,22 @@
 <script>
 	import Navbar from '@/components/Navbar.svelte';
-	import Footer from '@/components/Footer.svelte';
+	import { page } from '$app/stores';
+
 	import '@/app.css';
 	import Player from '@/components/Player.svelte';
 </script>
 
 <div class="flex flex-col min-h-screen">
-	<!-- <div class="flex flex-col min-h-screen bg-gray-900"> -->
-	<!-- Navbar -->
-	<header class="fixed w-full">
-		<Navbar />
-	</header>
-
-	<!-- Main Content -->
-	<main class="flex-grow mt-[80px] px-[10vw] py-[40px] h-full">
+	{#if $page.url.pathname == '/account/login' || $page.url.pathname == '/account/signup'}
 		<slot />
-		<Player />
-	</main>
 
-	<!-- Footer -->
-	<!-- <footer class="w-full">
-		<Footer />
-	</footer> -->
+	{:else}
+		<header class="fixed w-full">
+			<Navbar />
+		</header>
+		<main class="flex-grow mt-[80px] px-[10vw] py-[40px] h-full">
+			<slot />
+			<Player />
+		</main>
+	{/if}
 </div>

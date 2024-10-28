@@ -19,9 +19,7 @@ namespace backend.Services.UserServices
       try
       {
         // Check if user exists
-        var existingUser = await _context.Users
-            .Include(user => user.Playlists) // Include playlists in the query
-            .FirstOrDefaultAsync(user => user.Username == username);
+        var existingUser = await _context.Users.FirstOrDefaultAsync(user => user.Username == username);
 
         if (existingUser == null)
         {
@@ -41,6 +39,7 @@ namespace backend.Services.UserServices
           UserId = existingUser.Id,
           Username = existingUser.Username,
           Image = existingUser.Image,
+          DefaultPlaylistId = existingUser.DefaultPlaylistId,
         };
 
         new PrintSuccess($"User '{username}' logged in");

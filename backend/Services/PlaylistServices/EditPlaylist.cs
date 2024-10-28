@@ -7,7 +7,7 @@ namespace backend.Services.PlaylistServices
 {
   public partial class PlaylistServices
   {
-    public async Task<PlaylistResponse> EditPlaylist(int? playlistId, string? name)
+    public async Task<PlaylistResponse> EditPlaylist(int? playlistId, string? name, string? imageBase64String)
     {
       try
       {
@@ -20,6 +20,7 @@ namespace backend.Services.PlaylistServices
         }
 
         if (!string.IsNullOrEmpty(name)) existingPlaylist.Name = name;
+        if (!string.IsNullOrEmpty(name)) existingPlaylist.ImageBase64String = imageBase64String;
 
         await _context.SaveChangesAsync();
 

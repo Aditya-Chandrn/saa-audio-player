@@ -14,7 +14,7 @@ namespace backend.DTO.UserDTO
       public int UserId { get; set; }
       public string? Username { get; set; }
       public string? Image { get; set; }
-      public List<PlaylistInfo> Playlists { get; set; } = [];
+      public int DefaultPlaylistId { get; set; }
     }
 
     // playlist info

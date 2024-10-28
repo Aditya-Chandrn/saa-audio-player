@@ -1,17 +1,18 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_SERVER_URL } from '$env/static/public';
-import LocalStorage from '@/utils/localStorage';
+import LocalStorage from '@/utils/cookiesManagement';
 import axios from 'axios';
-import { getDefaultPlaylist } from './userApiCalls';
+import { getPlaylist } from './playlistApiCalls';
+import CookieStorage from '@/utils/cookiesManagement';
 
 ///////// CREATE AUDIO /////////////
 async function createAudio(audioBase64String: string, title: string, album: string | null){
-  const userId: number = LocalStorage.getItem("user").userId;
+  const userId: number = CookieStorage.get("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/audio/create`;
 	try{
 		const response: any = await axios.post(url, {userId, audioBase64String, title, album});
     alert(response.data.message);
-		return await getDefaultPlaylist();
+		return await getPlaylist();
 	} catch (error: any){
 		alert(error.response.data.message);
 	}
@@ -35,7 +36,7 @@ async function editAudio(audioId: number, title: string | null, album: string | 
 	try{
 		const response: any = await axios.patch(url, {audioId, title, album})
 		alert(response.data.message);
-		return await getDefaultPlaylist();
+		return await getPlaylist();
 	} catch (error: any){
 		alert(error.response.data.message);
 		
@@ -48,7 +49,7 @@ async function deleteAudio(audioId: number) {
 	try {
 		const response = await axios.delete(url, {data: audioId});
 		alert(response.data.message);
-    return await getDefaultPlaylist();
+    return await getPlaylist();
 	} catch (error:any) {
 		alert(error.response.data.message);
 	}

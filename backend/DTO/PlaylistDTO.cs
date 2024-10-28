@@ -6,6 +6,7 @@ namespace backend.DTO
     public int? UserId { get; set; }
     public int? PlaylistId { get; set; }
     public int? AudioId { get; set; }
+    public string? ImageBase64String { get; set; }
     public string? Name { get; set; }
 
   }
@@ -21,6 +22,7 @@ namespace backend.DTO
   {
     public int PlaylistId { get; set; }
     public string? Name { get; set; }
+    public string? ImageBase64String { get; set; }
     public List<AudioInfo> Audios { get; set; } = [];
   }
 

@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_SERVER_URL } from '$env/static/public';
-import LocalStorage from '@/utils/localStorage';
+import type { Playlist } from '@/data/types';
+import CookieStorage from '@/utils/cookiesManagement';
 import axios from 'axios';
 
 ///////// LOGIN /////////////
@@ -8,9 +9,8 @@ async function login(username: string, password: string) {
 	const url: string = `${PUBLIC_SERVER_URL}/user/Login`;
 	try{
 		const response: any = await axios.post(url, {username, password})
-		LocalStorage.setItem("user", response.data.user)
-		await getDefaultPlaylist();
-		goto("/music");
+		CookieStorage.set("user", response.data.user)
+		goto("/home");
 	} catch (error: any){
 		alert(error.response.data.message);
 	}
@@ -22,8 +22,8 @@ async function signup(username: string, password: string) {
 
 	try {
 		const response: any = await axios.post(url, { username, password });
-		LocalStorage.setItem('user', response.data.user);
-		goto('/music');
+		CookieStorage.set('user', response.data.user);
+		goto('/home');
 	} catch (error: any) {
 		alert(error.response.data.message);
 	}
@@ -31,11 +31,11 @@ async function signup(username: string, password: string) {
 
 ///////// EDIT USER /////////////
 async function editUser(password: string | null) {
-	const userId: number = LocalStorage.getItem("user").userId;
+	const userId: number = CookieStorage.get("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/user/edit`;
 	try {
 		const response = await axios.patch(url, { userId, password });
-		LocalStorage.setItem('user', response.data.user);
+		CookieStorage.set('user', response.data.user);
 		alert(response.data.message);
 	} catch (error: any) {
 		alert(error.response.data.message);
@@ -44,7 +44,7 @@ async function editUser(password: string | null) {
 
 ///////// DELETE USER /////////////
 async function deleteUser(){
-	const userId: number = LocalStorage.getItem("user").userId;
+	const userId: number = CookieStorage.get("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/user/delete`;
 	try {
 		const response = await axios.delete(url, { data: userId });
@@ -56,15 +56,15 @@ async function deleteUser(){
 }
 
 ///////// GET USER DEFAULT PLAYLIST /////////////
-async function getDefaultPlaylist(){
-	const userId: number = LocalStorage.getItem("user").userId;
+async function getUserPlaylists(){
+	const userId: number = CookieStorage.get("user").userId;
 	const url: string = `${PUBLIC_SERVER_URL}/user/get-playlists`;
 	try {
 		const response = await axios.get(url, { params: { userId } });
-		LocalStorage.setItem('playlists', response.data.playlists);
+		return response.data.playlists;
 	} catch (error: any) {
 		alert(error.response.data.message);
 	}
 }
 
-export { login, signup, editUser, deleteUser, getDefaultPlaylist };
+export { login, signup, editUser, deleteUser, getUserPlaylists };
