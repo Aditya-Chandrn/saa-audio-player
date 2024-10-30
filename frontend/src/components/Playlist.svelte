@@ -8,10 +8,6 @@
 	let playlist: PlaylistType;
 	export let playlistId;
 
-	export let removeAudio = async (audioId: number) => {
-		playlist = await removeAudioFromPlaylist(playlistId, audioId);
-	};
-
 	// State
 	let isEditMode = false;
 
@@ -55,7 +51,7 @@
 
 		<ul class="space-y-2">
 			{#each playlist.audios as audio}
-				<Audio {audio} {isEditMode} removeAudio={() => removeAudio(audio.audioId)} />
+				<Audio {audio} {isEditMode} />
 			{/each}
 		</ul>
 	</div>

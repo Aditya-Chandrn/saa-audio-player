@@ -39,11 +39,11 @@ namespace backend.Config
 				.HasOne(pa => pa.Audio)
 				.WithMany(a => a.PlaylistsAudios)
 				.HasForeignKey(pa => pa.AudioId)
-				.OnDelete(DeleteBehavior.Restrict);
+				.OnDelete(DeleteBehavior.Cascade);
 
 			// relation between playlist and user
 			modelBuilder.Entity<Playlist>()
-				.HasOne(p => p.Creator)
+				.HasOne	(p => p.Creator)
 				.WithMany(u => u.Playlists)
 				.HasForeignKey(p => p.CreatorId)
 				.OnDelete(DeleteBehavior.Cascade);
