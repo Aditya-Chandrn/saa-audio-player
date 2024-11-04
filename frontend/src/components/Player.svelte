@@ -190,7 +190,11 @@
 
 	async function handleKeydown(e: KeyboardEvent) {
 		if (e.code === 'Space') {
-			e.preventDefault();
+			// Check if the focused element is an input or textarea
+			const target = e.target as HTMLElement;
+			if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
+
+			e.preventDefault(); // Prevent default only if not in an input/textarea
 			await togglePlay();
 		} else if (e.code === 'ArrowLeft') {
 			if (audio) {

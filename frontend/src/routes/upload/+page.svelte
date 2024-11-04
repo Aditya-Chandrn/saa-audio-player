@@ -70,7 +70,7 @@
 		type="text"
 		placeholder="Enter title"
 		bind:value={title}
-		class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+		class="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:ring-indigo-500 sm:text-sm"
 	/>
 	<!-- svelte-ignore a11y-label-has-associated-control -->
 	<label class="block text-sm font-medium text-gray-700 mt-4">Album (Optional):</label>
