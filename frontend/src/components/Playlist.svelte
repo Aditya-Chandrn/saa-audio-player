@@ -8,10 +8,6 @@
 	let playlist: PlaylistType;
 	export let playlistId;
 
-	export let removeAudio = async (audioId: number) => {
-		playlist = await removeAudioFromPlaylist(playlistId, audioId);
-	};
-
 	// State
 	let isEditMode = false;
 
@@ -20,11 +16,25 @@
 		isEditMode = !isEditMode;
 	}
 
+	// Handle audio removal with confirmation
+	const handleRemoveAudio = async (event: CustomEvent) => {
+		const audioId = event.detail;
+
+		// Show confirmation prompt
+		const confirmed = confirm('Are you sure you want to remove this song from the playlist?');
+		if (!confirmed) return; // Exit if user cancels
+
+		try {
+			// Proceed with removal if confirmed
+			playlist = await removeAudioFromPlaylist(playlistId, audioId);
+		} catch (error) {
+			console.error('Failed to remove audio:', error);
+		}
+	};
+
 	onMount(async () => {
 		playlist = await getPlaylist(playlistId);
 	});
-
-	// Function to add a new audio to the playlist
 </script>
 
 {#if !playlist}
@@ -55,7 +65,7 @@
 
 		<ul class="space-y-2">
 			{#each playlist.audios as audio}
-				<Audio {audio} {isEditMode} removeAudio={() => removeAudio(audio.audioId)} />
+				<Audio {audio} {isEditMode} on:removeAudio={handleRemoveAudio} />
 			{/each}
 		</ul>
 	</div>

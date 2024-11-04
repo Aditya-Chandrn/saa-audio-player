@@ -1,26 +1,18 @@
 import { writable } from 'svelte/store';
+import type { AudioType } from '@/data/types';
 
-interface Audio {
-	id: number;
-	title: string;
-	artist?: string;
-	album?: string;
-}
-
-// Define the structure of the music player's state
 interface MusicState {
-	playlist: Song[]; // A list of all songs available
-	currentSong: Song | null; // The currently playing song
-	isPlaying: boolean; // Whether the song is currently playing
-	currentIndex: number; // The index of the current song in the playlist
+	playlist: AudioType[];
+	currentAudio: AudioType | null;
+	isPlaying: boolean;
+	currentIndex: number;
 }
 
-// Define the initial state of the music player
 const initialState: MusicState = {
-	playlist: [], // Initially, no songs are in the playlist
-	currentSong: null, // No song is selected initially
-	isPlaying: false, // Player starts in paused state
-	currentIndex: -1 // No song index selected yet
+	playlist: [],
+	currentAudio: null,
+	isPlaying: false,
+	currentIndex: -1
 };
 
 export const musicStore = (() => {
@@ -29,67 +21,81 @@ export const musicStore = (() => {
 	return {
 		subscribe,
 
-		// Function to load a new playlist (array of songs)
-		loadPlaylist: (songs: Song[]) => {
+		loadPlaylist: (audios: AudioType[]) => {
+			// console.log('Loading playlist:', audios);
 			update((state) => {
-				return {
+				const newState = {
 					...state,
-					playlist: songs,
-					currentIndex: songs.length > 0 ? 0 : -1, // If there are songs, set the index to 0
-					currentSong: songs.length > 0 ? songs[0] : null
+					playlist: audios,
+					currentIndex: audios.length > 0 ? 0 : -1,
+					currentAudio: audios.length > 0 ? audios[0] : null
 				};
+				// console.log('Updated state after loading playlist:', newState);
+				return newState;
 			});
 		},
 
-		// Play the next song in the playlist
 		playNext: () =>
 			update((state) => {
-				const nextIndex = (state.currentIndex + 1) % state.playlist.length; // Loop to start if at the end
-				return {
+				if (state.playlist.length === 0) {
+					// console.log('No audios in the playlist to play next.');
+					return state;
+				}
+				const nextIndex = (state.currentIndex + 1) % state.playlist.length;
+				const newState = {
 					...state,
 					currentIndex: nextIndex,
-					currentSong: state.playlist[nextIndex],
+					currentAudio: state.playlist[nextIndex],
 					isPlaying: true
 				};
+				// console.log('Playing next audio:', newState.currentAudio, 'at index:', nextIndex);
+				return newState;
 			}),
 
-		// Play the previous song in the playlist
 		playPrevious: () =>
 			update((state) => {
+				if (state.playlist.length === 0) {
+					// console.log('No audios in the playlist to play previous.');
+					return state;
+				}
 				const prevIndex =
-					state.currentIndex === 0 ? state.playlist.length - 1 : state.currentIndex - 1; // Loop to end if at the start
-				return {
+					state.currentIndex === 0 ? state.playlist.length - 1 : state.currentIndex - 1;
+				const newState = {
 					...state,
 					currentIndex: prevIndex,
-					currentSong: state.playlist[prevIndex],
+					currentAudio: state.playlist[prevIndex],
 					isPlaying: true
 				};
+				// console.log('Playing previous audio:', newState.currentAudio, 'at index:', prevIndex);
+				return newState;
 			}),
 
-		// Toggle between play and pause
 		togglePlay: () =>
 			update((state) => {
-				return {
+				const newState = {
 					...state,
 					isPlaying: !state.isPlaying
 				};
+				// console.log('Toggled play state. Now playing:', newState.isPlaying);
+				return newState;
 			}),
 
-		// Set the current song by its index in the playlist
-		setCurrentSong: (index: number) =>
+		setCurrentAudio: (audioData: { audioId: number; title: string; artist: string; url: string }) =>
 			update((state) => {
-				if (index >= 0 && index < state.playlist.length) {
-					return {
-						...state,
-						currentIndex: index,
-						currentSong: state.playlist[index],
-						isPlaying: true
-					};
-				}
-				return state; // If the index is invalid, return the state unchanged
+				const audioIndex = state.playlist.findIndex((audio) => audio.audioId === audioData.audioId);
+				const newState = {
+					...state,
+					currentIndex: audioIndex !== -1 ? audioIndex : state.currentIndex,
+					currentAudio: audioData,
+					isPlaying: true
+				};
+				// console.log('Set current audio:', audioData, 'at index:', newState.currentIndex);
+				return newState;
 			}),
 
-		// Stop playback and reset player state
-		stopPlayback: () => set(initialState)
+		stopPlayback: () => {
+			// console.log('Stopping playback and resetting state.');
+			set(initialState);
+		}
 	};
 })();

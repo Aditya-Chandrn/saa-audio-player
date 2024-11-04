@@ -1,6 +1,6 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_SERVER_URL } from '$env/static/public';
-import type { Playlist } from '@/data/types';
+// import type { Playlist } from '@/data/types';
 import CookieStorage from '@/utils/cookiesManagement';
 import axios from 'axios';
 

@@ -14,6 +14,7 @@
 	let navOptions: readonly NavOption[] = [
 		{ page: 'Home', link: '/home' },
 		{ page: 'Playlist', link: `/${userSlug}/playlist` },
+		{ page: 'Upload', link: '/upload' }
 	];
 
 	function handleLogout() {
