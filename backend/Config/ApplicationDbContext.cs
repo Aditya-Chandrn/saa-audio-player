@@ -16,9 +16,9 @@ namespace backend.Config
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseNpgsql(EnvVariables.SUPABASE_URI,
-					npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
-					.EnableSensitiveDataLogging()
-					.LogTo(Console.WriteLine, LogLevel.Information);
+					npgsqlOptions => npgsqlOptions.EnableRetryOnFailure());
+			// .EnableSensitiveDataLogging()
+			// .LogTo(Console.WriteLine, LogLevel.Information);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
