@@ -3,6 +3,7 @@
 	import { getUserPlaylists } from '@/apiCalls/userApiCalls';
 	import type { PlaylistType } from '@/data/types';
 	import { onMount } from 'svelte';
+	
 	export let data: { userslug: string };
 
 	let playlists: PlaylistType[] = [];
@@ -11,6 +12,10 @@
 	function openPlaylist(playlistId: string) {
 		goto(`/${data.userslug}/playlist/${playlistId}`);
 	}
+
+	const redirectToAddPlaylist = () => {
+    	goto('/addPlaylist'); 
+  	};
 
 	onMount(async () => {
 		playlists = await getUserPlaylists();
@@ -40,5 +45,20 @@
 				<h2 class="text-xl font-semibold">{playlist.name}</h2>
 			</div>
 		{/each}
+
+		<button
+			class="bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition cursor-pointer flex flex-col justify-center items-center"
+			tabindex="0"
+			aria-label="Add playlist"
+			on:click={redirectToAddPlaylist}
+		>
+		<img
+			class="w-20 h-20 object-cover rounded-full mb-4"
+			src="/src/assets/add.png"
+			alt="Add a new playlist"
+		/>
+			<h2 class="text-xl font-semibold text-center">Add playlist</h2>
+		</button>
+		
 	</div>
 </section>
