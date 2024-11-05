@@ -70,28 +70,28 @@ export const musicStore = (() => {
 				return newState;
 			}),
 
-		togglePlay: () =>
-			update((state) => {
-				const newState = {
+			togglePlay: () =>
+				update((state) => {
+				  const newState = {
 					...state,
-					isPlaying: !state.isPlaying
-				};
-				// console.log('Toggled play state. Now playing:', newState.isPlaying);
-				return newState;
-			}),
-
-		setCurrentAudio: (audioData: { audioId: number; title: string; artist: string; url: string }) =>
-			update((state) => {
-				const audioIndex = state.playlist.findIndex((audio) => audio.audioId === audioData.audioId);
-				const newState = {
+					isPlaying: state.currentAudio ? !state.isPlaying : state.isPlaying
+				  };
+				  console.log('Toggle Play, isPlaying:', newState.isPlaying);
+				  return newState;
+				}),
+			  
+			  setCurrentAudio: (audioData: { audioId: number; title: string; artist: string; url: string }) =>
+				update((state) => {
+				  const audioIndex = state.playlist.findIndex((audio) => audio.audioId === audioData.audioId);
+				  const newState = {
 					...state,
 					currentIndex: audioIndex !== -1 ? audioIndex : state.currentIndex,
 					currentAudio: audioData,
-					isPlaying: true
-				};
-				// console.log('Set current audio:', audioData, 'at index:', newState.currentIndex);
-				return newState;
-			}),
+					isPlaying: true // Directly set to playing
+				  };
+				  console.log('Set Current Audio, isPlaying:', newState.isPlaying);
+				  return newState;
+				}),
 
 		stopPlayback: () => {
 			// console.log('Stopping playback and resetting state.');

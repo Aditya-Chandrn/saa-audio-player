@@ -21,7 +21,7 @@
 					artist: audioData.artist || '',
 					url: audioData.url || ''
 				});
-				musicStore.togglePlay();
+				// Removed togglePlay here
 			} else {
 				alert('Audio data could not be retrieved.');
 			}
@@ -29,7 +29,6 @@
 			console.error('Failed to fetch audio:', error);
 		}
 	};
-
 	// Function to handle remove audio
 	const removeAudio = () => {
 		dispatch('removeAudio', audio.audioId);

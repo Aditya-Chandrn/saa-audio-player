@@ -438,8 +438,8 @@
 				</svg>
 			</button>
 
-			<button on:click={togglePlay} class="p-2" aria-label="Play/Pause" disabled={!currentAudio}>
-				{#if isPlaying}
+			<button on:click={ () => musicStore.togglePlay} class="p-2" aria-label="Play/Pause" disabled={!currentAudio}>
+				{#if $musicStore.isPlaying}
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path d="M10 4H6v16h4V4zm8 0h-4v16h4V4z"></path>
 					</svg>
