@@ -31,6 +31,7 @@
   justify-content: center;
   height: 100vh;
   background-color: #f0f4f8;
+  overflow-y: hidden;
 }
 
 .login-box {

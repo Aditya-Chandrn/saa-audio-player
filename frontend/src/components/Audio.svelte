@@ -28,7 +28,6 @@
 			console.error('Failed to fetch audio:', error);
 		}
 	};
-
 	// Function to handle remove audio
 	const removeAudio = () => {
 		dispatch('removeAudio', audio.audioId);
