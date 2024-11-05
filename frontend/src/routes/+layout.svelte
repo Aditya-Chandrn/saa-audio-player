@@ -7,16 +7,16 @@
 </script>
 
 <div class="flex flex-col min-h-screen">
-	{#if !['/accounts/login', '/accounts/signup'].includes($page.url.pathname)}
+	{#if !['/account/login', '/account/signup'].includes($page.url.pathname)}
 		<header class="fixed w-full">
 			<Navbar />
 		</header>
 	{/if}
 	<main class="flex-grow mt-[80px] px-[10vw] py-[40px] h-full">
 		<slot />
-		
-		{#if !['/accounts/login', '/accounts/signup'].includes($page.url.pathname)}
-		<Player />
+
+		{#if !['/account/login', '/account/signup'].includes($page.url.pathname)}
+			<Player />
 		{/if}
 	</main>
 </div>

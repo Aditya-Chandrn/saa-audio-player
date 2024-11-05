@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getAudio } from '@/apiCalls/audioApiCalls';
-	import { removeAudioFromPlaylist } from '@/apiCalls/playlistApiCalls';
 	import type { AudioType } from '@/data/types';
 	import { musicStore } from '@/stores/musicStore';
 	import { createEventDispatcher } from 'svelte';
@@ -21,7 +20,7 @@
 					artist: audioData.artist || '',
 					url: audioData.url || ''
 				});
-				musicStore.togglePlay();
+				// Removed togglePlay here
 			} else {
 				alert('Audio data could not be retrieved.');
 			}
@@ -41,7 +40,7 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click={playAudio}>
 		<h3 class="font-semibold">{audio.title}</h3>
-		<p class="text-gray-600">{audio.artist || 'Unknown Artist'}</p>
+		<p class="text-gray-600">{audio.album || 'Unknown Album'}</p>
 	</div>
 
 	{#if isEditMode}

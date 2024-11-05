@@ -4,6 +4,7 @@
 	import { getUserPlaylists } from '@/apiCalls/userApiCalls';
 	import Audio from '@/components/Audio.svelte';
 	import type { PlaylistType, AudioType } from '@/data/types';
+	import { musicStore } from '@/stores/musicStore';
 	import getDefaultPlaylist from '@/utils/getDefaultPlaylist';
 	import { onMount } from 'svelte';
 
@@ -47,6 +48,7 @@
 
 	onMount(async () => {
 		defaultPlaylist = await getDefaultPlaylist();
+		musicStore.loadPlaylist(defaultPlaylist.audios);
 		allPlaylists = await getUserPlaylists();
 	});
 </script>
