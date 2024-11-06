@@ -22,7 +22,7 @@ namespace backend.Controllers
 				return BadRequest(new { Message = "Playlist details not found" });
 
 			// Create playlist
-			var result = await _playlistServices.CreatePlaylist(createRequest.UserId, createRequest.Name);
+			var result = await _playlistServices.CreatePlaylist(createRequest.UserId, createRequest.Name, createRequest.ImageBase64String);
 			return StatusCode(result.StatusCode, new { result.Message, result.Playlist });
 		}
 

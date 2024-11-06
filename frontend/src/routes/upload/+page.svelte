@@ -2,12 +2,12 @@
 	import { createAudio } from '@/apiCalls/audioApiCalls';
 
 	let audioFile: File | null = null;
-	let playlistId: number = 1; // Set your default playlistId or pass dynamically
+	let playlistId: number = 1;
 	let title = '';
 	let album: string | null = null;
 	let base64Audio = '';
+	let isUploading = false;
 
-	// Function to handle file selection and convert to base64
 	const handleFileChange = async (event: Event) => {
 		const target = event.target as HTMLInputElement;
 		const files = target.files;
@@ -16,14 +16,13 @@
 
 			try {
 				const base64 = await fileToBase64(audioFile);
-				base64Audio = base64.split(',')[1]; // Remove prefix
+				base64Audio = base64.split(',')[1];
 			} catch (error) {
 				console.error('Error processing audio file:', error);
 			}
 		}
 	};
 
-	// Promise-based file to base64 conversion
 	const fileToBase64 = (file: File): Promise<string> => {
 		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
@@ -39,52 +38,92 @@
 		});
 	};
 
-	// Function to upload audio to the endpoint
 	const uploadAudio = async () => {
-		if (base64Audio && title) {
-			await createAudio(playlistId, base64Audio, title, album);
-		} else {
+		if (!base64Audio || !title) {
 			alert('Please complete all fields and select a file to upload.');
+			return;
+		}
+
+		try {
+			isUploading = true;
+			await createAudio(playlistId, base64Audio, title, album);
+			// Reset form after successful upload
+			audioFile = null;
+			title = '';
+			album = null;
+			base64Audio = '';
+			const input = document.getElementById('audioFile') as HTMLInputElement;
+			if (input) input.value = '';
+		} catch (error) {
+			console.error('Upload failed:', error);
+			alert('Failed to upload audio. Please try again.');
+		} finally {
+			isUploading = false;
 		}
 	};
 </script>
 
-<div class="file-upload">
-	<label for="audioFile" class="block text-sm font-medium text-gray-700">Select Audio File:</label>
-	<input
-		type="file"
-		id="audioFile"
-		accept="audio/*"
-		on:change={handleFileChange}
-		class="mt-1 block w-full text-sm text-gray-500
-               file:mr-4 file:py-2 file:px-4
-               file:rounded-full file:border-0
-               file:text-sm file:font-semibold
-               file:bg-violet-50 file:text-violet-700
-               hover:file:bg-violet-100"
-	/>
+<div class="max-w-2xl mx-auto p-8 backdrop-blur-sm rounded-xl border border-gray-700/50 shadow-lg">
+	<h2 class="text-2xl font-bold mb-6 text-black">Upload Audio</h2>
 
-	<!-- svelte-ignore a11y-label-has-associated-control -->
-	<label class="block text-sm font-medium text-gray-700 mt-4">Title:</label>
-	<input
-		type="text"
-		placeholder="Enter title"
-		bind:value={title}
-		class="mt-1 block w-full rounded-md border-gray-300 shadow-sm  focus:ring-indigo-500 sm:text-sm"
-	/>
-	<!-- svelte-ignore a11y-label-has-associated-control -->
-	<label class="block text-sm font-medium text-gray-700 mt-4">Album (Optional):</label>
-	<input
-		type="text"
-		placeholder="Album name"
-		bind:value={album}
-		class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-	/>
+	<div class="space-y-6">
+		<!-- File Upload -->
+		<div class="relative">
+			<label for="audioFile" class="block text-sm font-medium text-black mb-2">
+				Select Audio File
+			</label>
+			<input
+				type="file"
+				id="audioFile"
+				accept="audio/*"
+				on:change={handleFileChange}
+				class="block w-full text-sm text-gray-500
+					   file:mr-4 file:py-2 file:px-4
+					   file:rounded-full file:border-0
+					   file:text-sm file:font-semibold
+					   file:bg-violet-50 file:text-violet-700
+					   hover:file:bg-violet-100"
+			/>
+			{#if audioFile}
+				<p class="mt-2 text-sm text-black">Selected: {audioFile.name}</p>
+			{/if}
+		</div>
 
-	<button
-		on:click={uploadAudio}
-		class="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
-	>
-		Upload Audio
-	</button>
+		<!-- Title Input -->
+		<div>
+			<label for="title" class="block text-sm font-medium text-black mb-2"> Title </label>
+			<input
+				type="text"
+				id="title"
+				placeholder="Enter title"
+				bind:value={title}
+				class="w-full px-4 py-2 border border-gray-600 rounded-lg text-black placeholder-gray-400 focus:ring-1 outline-none transition-colors duration-300"
+			/>
+		</div>
+
+		<!-- Album Input -->
+		<div>
+			<label for="album" class="block text-sm font-medium text-black mb-2">
+				Album (Optional)
+			</label>
+			<input
+				type="text"
+				id="album"
+				placeholder="Album name"
+				bind:value={album}
+				class="w-full px-4 py-2 border border-gray-600 rounded-lg text-black placeholder-gray-400 focus:ring-1 outline-none transition-colors duration-300"
+			/>
+		</div>
+
+		<!-- Upload Button -->
+		<button
+			on:click={uploadAudio}
+			disabled={isUploading}
+			class="w-full px-4 py-3 bg-[#86efac] text-black font-semibold rounded-lg
+            focus:outline-none focus:ring-2 focus:ring-offset-2
+            disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
+		>
+			{isUploading ? 'Uploading...' : 'Upload Audio'}
+		</button>
+	</div>
 </div>

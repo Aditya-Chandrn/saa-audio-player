@@ -14,7 +14,7 @@ namespace backend.Services.PlaylistServices
     {
       _context = context;
     }
-    public async Task<PlaylistResponse> CreatePlaylist(int? userId, string? name)
+    public async Task<PlaylistResponse> CreatePlaylist(int? userId, string? name, string? imageBase64String)
     {
       try
       {
@@ -30,9 +30,10 @@ namespace backend.Services.PlaylistServices
         var playlist = new Playlist
         {
           Name = name,
+          ImageBase64String = imageBase64String,
           CreatorId = existingUser.Id
         };
-        
+
         _context.Playlists.Add(playlist);
         await _context.SaveChangesAsync();
 

@@ -1,6 +1,4 @@
-import { goto } from '$app/navigation';
 import { PUBLIC_SERVER_URL } from '$env/static/public';
-import LocalStorage from '@/utils/cookiesManagement';
 import axios from 'axios';
 import { getPlaylist } from './playlistApiCalls';
 import CookieStorage from '@/utils/cookiesManagement';
