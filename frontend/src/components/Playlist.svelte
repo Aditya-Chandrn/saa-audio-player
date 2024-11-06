@@ -43,15 +43,8 @@
 	<div class="p-4">
 		<div class="flex items-center space-x-4 mb-4 justify-between">
 			<div>
-				<img
-					src={playlist.imageBase64String}
-					alt={playlist.name}
-					class="w-32 h-32 object-cover rounded"
-				/>
-				<div>
-					<h2 class="text-2xl font-bold">{playlist.name}</h2>
-					<p>Number of audio: {playlist.audios.length}</p>
-				</div>
+				<h2 class="text-2xl font-bold">{playlist.name}</h2>
+				<p>Number of audio: {playlist.audios.length}</p>
 			</div>
 			<div class="flex space-x-2">
 				<button

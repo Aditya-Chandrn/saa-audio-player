@@ -25,7 +25,7 @@
 	});
 </script>
 
-<main class="pb-52">
+<main class="pb-52 ">
 	{#if playlistId && playlist}
 		<Playlist {playlistId} />
 	{:else}

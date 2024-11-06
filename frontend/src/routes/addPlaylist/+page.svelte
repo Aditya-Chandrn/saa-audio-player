@@ -7,10 +7,9 @@
 	const handleAddPlaylist = async () => {
 		if (playlistName) {
 			try {
-				// Call the API to create the playlist
 				await createPlaylist(playlistName);
 				message = 'Playlist created successfully!';
-				playlistName = ''; // Reset the field after success
+				playlistName = '';
 			} catch (error) {
 				console.error('Error creating playlist:', error);
 				message = 'Failed to create playlist.';
