@@ -19,7 +19,8 @@ async function createAudio(
 	try {
 		const response: any = await axios.post(url, { userId, audioBase64String, title, album });
 		alert(response.data.message);
-		return await getPlaylist(playlistId);
+		// return await getPlaylist(playlistId);
+		goto("/home")
 	} catch (error: any) {
 		alert(error.response.data.message);
 	}

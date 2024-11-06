@@ -11,6 +11,7 @@ async function createPlaylist(name: string){
 	try{
 		const response: any = await axios.post(url, {userId, name});
     alert(response.data.message);
+		goto(`/${CookieStorage.get("user").username}/playlist`)
 	} catch (error: any){
 		alert(error.response.data.message);
 	}
